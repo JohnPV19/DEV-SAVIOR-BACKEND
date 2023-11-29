@@ -7,27 +7,25 @@ const Post = require("../models/Post.model")
 
 
     // Reads all Posts - Homepage view
-router.get("/api/posts", (req, res)=>{
-    const {title} = req.body;
-
+router.get("/posts", (req, res)=>{
     Post
-    .find({title})
+    .find({})
     .then((response)=> res.json(response))
     .catch((error)=> res.json(error));
 });
 
     // Reads specific Post by Id, with it's content
-router.get("/api/posts/:id", (req, res)=>{
-    const {postId} = req.params;
+    router.get("/posts/:id", (req, res) => {
+        const { id } = req.params; // Correct variable name should match the route parameter
     Post
-    .findById(postId)
+    .findById(id)
     .populate("bodyText")
-    .then((post)=> res.json(post))
-    .catch((error)=> res.json(error));
+    .then((post) => res.json(post))
+    .catch((error) => res.json(error));
 });
 
     // Creates a new post
-router.post("/api/posts/new", (req, res)=>{
+router.post("/posts/new", (req, res)=>{
     const {title, bodyText, img} = req.body;
 
     Post
@@ -37,27 +35,25 @@ router.post("/api/posts/new", (req, res)=>{
 });
 
     // Edits a specific post
-router.put("/api/posts/:id", (req, res)=>{
-    const {postId} = req.params;
-    const {title, bodyText, img} = req.params;
-
+router.put("/posts/:id", (req, res) => {
+    const { id } = req.params;
+    const { title, bodyText, img } = req.body; // Retrieve data from req.body
+        
     Post
-    .findByIdAndUpdate(postId, {title, bodyText, img})
-    .then(()=>{ res.json()
-    .catch((error)=> res.json(error))
-    })
+    .findByIdAndUpdate(id, { title, bodyText, img }, { new: true }) // { new: true } returns the updated post
+    .then((updatedPost) => res.json(updatedPost)) // Send the updated post as JSON response)
+    .catch((error) => res.status(500).json({ error: "Failed to update post", details: error }));
 });
 
     // Deletes a specific post
-router.delete("/api/posts/:id", (req, res)=>{
-    const {postId} = req.params;
+router.delete("/posts/:id", (req, res) => {
+    const { id } = req.params;
 
-    Post
-    .findByIdAndDelete(postId)
-    .then(()=>{ res.json()
-    .catch((error)=> res.json(error))
-    })
-})
+    Post.findByIdAndDelete(id)
+    .then(() => res.json({ message: 'Post deleted successfully' }))
+    .catch((error) => res.json(error));
+});
+
 
 
 module.exports = router;
