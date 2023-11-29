@@ -14,10 +14,14 @@ const userSchema = new Schema(
       type: String,
       required: [true, "Password is required."],
     },
-    name: {
+    username: {
       type: String,
       required: [true, "Name is required."],
     },
+    createdPosts: [{
+      type: Schema.Types.ObjectId, 
+      ref: "Post",
+    }]
   },
   {
     // this second object adds extra properties: `createdAt` and `updatedAt`
