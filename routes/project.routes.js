@@ -6,25 +6,29 @@ const Project = require("../models/Project.model")
 
 
     // Reads all projects
-router.get('/projects', (req, res) => {
+router
+.get('/projects', (req, res) => {
   
 });
 
 
     // Reads a specific project
-router.get('/projects/:_id', (req, res) => {
+router
+.get('/projects/:_id', (req, res) => {
   
 });
 
 
     // Uploads a project
-router.get('/projects/upload', (req, res) => {
+router
+.get('/projects/upload', (req, res) => {
   
 });
 
 
     // Deletes a project
-router.get('/projects/:_id', (req, res) => {
+router
+.get('/projects/:_id', (req, res) => {
   
 });
 
