@@ -12,8 +12,14 @@ const projectSchema = new Schema(
       type: String,
       required: true,
     },
-    files: [fileSchema],  // Embed an array of file documents
-    contributors: [contributorSchema], // Embed an array of contributor documents
+    files: {          // Embed an array of file documents [fileSchema] LATER SUBSTITUTE
+      type: String,
+      required: true,
+    },  
+    contributors: {     // Embed an array of contributor documents [contributorSchema] LATER SUBSTITUTE
+      type: String,
+      required: true,
+    }, 
     // Add more fields as needed, e.g., project owner, date created, etc.
   });
 
