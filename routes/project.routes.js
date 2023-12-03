@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
+const path = require('path');
+const fs = require('fs/promises');
 
 const Project = require("../models/Project.model")
 
@@ -17,18 +19,18 @@ router
 
     // Reads a specific project
 router
-.get('/projects/:_id', (req, res) => {
-    const { _id } = req.params; // Correct variable name should match the route parameter
+.get('/projects/:fileId', (req, res) => {
+    const {fileId} = req.params; 
     Project
-    .findById(_id)
+    .findById(fileId)
     .then((response) => res.json(response))
     .catch((error) => res.json(error));
   
 });
 
 
-    // Uploads a project
-router
+    // Uploads a project 
+/* router
 .post('/projects/upload', (req, res) => {
     const {projectName, description, files, contributors} = req.body;
 
@@ -37,12 +39,12 @@ router
     .then((project)=> res.json(project))
     .catch((error)=> res.json(error))
   
-});
+}); */
 
 
     // Deletes a project
 router
-.delete('/projects/:_id', (req, res) => {
+.delete('/projects/:fileId', (req, res) => {
     const { _id } = req.params;
 
     Project.findByIdAndDelete(_id)
@@ -51,5 +53,26 @@ router
   
 });
 
+
+    // Uploads content of uploaded files
+    router.post('/projects/upload', async (req, res) => {
+        try {
+          const { fileName, saveDate, content } = req.body;
+      
+          // Save file details to MongoDB
+          const newProject = new Project({
+            fileName,
+            content,
+            saveDate,
+          });
+      
+          const savedProject = await newProject.save();
+      
+          res.json(savedProject);
+        } catch (error) {
+          console.error(error);
+          res.status(500).json({ error: 'Internal Server Error' });
+        }
+      });
 
 module.exports = router;
