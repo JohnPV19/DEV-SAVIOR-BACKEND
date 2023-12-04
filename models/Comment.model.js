@@ -1,10 +1,5 @@
 const { Schema, model } = require('mongoose');
-
 const commentSchema = new Schema({
-  fileName: {
-    type: String,
-    required: true,
-  },
   saveDate: {
     type: Date,
     default: Date.now,
@@ -13,13 +8,13 @@ const commentSchema = new Schema({
     type: String,
     required: true,
   },
-  user: {
-    type: Schema.Types.ObjectId,
-    ref: 'User',
-    required: true,
+  img: {
+    type: String
+  },
+  username: {
+    type: String,
+    required: true
   },
 });
-
 const Comment = model('Comment', commentSchema);
-
 module.exports = Comment;

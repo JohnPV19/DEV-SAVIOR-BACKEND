@@ -19,10 +19,10 @@ router
 
     // Reads a specific project
 router
-.get('/projects/:fileId', (req, res) => {
-    const {fileId} = req.params; 
+.get('/projects/:_id', (req, res) => {
+    const {_id} = req.params; 
     Project
-    .findById(fileId)
+    .findById(_id)
     .then((response) => res.json(response))
     .catch((error) => res.json(error));
   
@@ -44,7 +44,7 @@ router
 
     // Deletes a project
 router
-.delete('/projects/:fileId', (req, res) => {
+.delete('/projects/:_id', (req, res) => {
     const { _id } = req.params;
 
     Project.findByIdAndDelete(_id)
