@@ -3,35 +3,35 @@ const mongoose = require("mongoose");
 const router = express.Router();
 
 const Post = require("../models/Post.model")
+const User = require("../models/User.model")
 
 
-    // Reads all Posts - Homepage view
-router.get("/posts", (req, res)=>{
-    Post
-    .find({})
-    .then((response)=> res.json(response))
-    .catch((error)=> res.json(error));
-});
-
-    // Reads specific Post by Id, with it's content
-router.get("/posts/:_id", (req, res) => {
-        const { _id } = req.params; // Correct variable name should match the route parameter
-    Post
-    .findById(_id)
-    //.populate("bodyText")
-    .then((response) => res.json(response))
-    .catch((error) => res.json(error));
-});
+router.get("/posts", (req, res) => {
+    Post.find({})
+      .populate("username")
+      .then((posts) => res.json(posts))
+      .catch((error) => res.json(error));
+  });
+  
+  router.get("/posts/:_id", (req, res) => {
+    const { _id } = req.params;
+  
+    Post.findById(_id)
+      .populate("username")
+      .then((post) => res.json(post))
+      .catch((error) => res.json(error));
+  });
+  
 
     // Creates a new post
-router.post("/posts/new", (req, res)=>{
-    const {title, bodyText, img} = req.body;
-
-    Post
-    .create({title, bodyText, img})
-    .then((post)=> res.json(post))
-    .catch((error)=> res.json(error))
-});
+    router.post("/posts/new", (req, res) => {
+        const { title, bodyText, img, username } = req.body;
+      
+        Post.create({ title, bodyText, img, username })
+          .then((post) => res.json(post))
+          .catch((error) => res.status(500).json({ error: "Failed to create post", details: error }));
+      });
+      
 
     // Edits a specific post
 router.put("/posts/edit/:_id", (req, res) => {

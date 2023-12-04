@@ -1,6 +1,6 @@
 const { Schema, model } = require('mongoose');
 
-const projectSchema = new Schema({
+const commentSchema = new Schema({
   fileName: {
     type: String,
     required: true,
@@ -13,11 +13,13 @@ const projectSchema = new Schema({
     type: String,
     required: true,
   },
-  username: {
-    type: String 
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+    required: true,
   },
 });
 
-const Project = model('Project', projectSchema);
+const Comment = model('Comment', commentSchema);
 
-module.exports = Project;
+module.exports = Comment;

@@ -57,13 +57,14 @@ router
     // Uploads content of uploaded files
     router.post('/projects/upload', async (req, res) => {
         try {
-          const { fileName, saveDate, content } = req.body;
-      
+          const { fileName, saveDate, content, username } = req.body;
+
           // Save file details to MongoDB
           const newProject = new Project({
             fileName,
             content,
             saveDate,
+            username,
           });
       
           const savedProject = await newProject.save();
