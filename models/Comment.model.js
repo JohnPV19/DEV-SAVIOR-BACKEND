@@ -1,9 +1,5 @@
 const { Schema, model } = require('mongoose');
 const commentSchema = new Schema({
-  saveDate: {
-    type: Date,
-    default: Date.now,
-  },
   content: {
     type: String,
     required: true,
@@ -14,6 +10,14 @@ const commentSchema = new Schema({
   username: {
     type: String,
     required: true
+  },
+  post: {
+    type: Schema.Types.ObjectId,
+    ref: "Post",
+  },
+  saveDate: {
+    type: Date,
+    default: Date.now,
   },
 });
 const Comment = model('Comment', commentSchema);

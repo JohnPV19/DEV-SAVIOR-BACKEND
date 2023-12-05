@@ -20,6 +20,10 @@ const postSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "Comment",
   }],
+  saveDate: {
+    type: Date,
+    default: Date.now,
+  },
 });
 const Post = model("Post", postSchema);
 module.exports = Post;

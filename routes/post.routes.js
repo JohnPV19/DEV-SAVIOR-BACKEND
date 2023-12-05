@@ -2,29 +2,29 @@ const express = require("express");
 const mongoose = require("mongoose");
 const router = express.Router();
 const Post = require("../models/Post.model")
-const User = require("../models/User.model")
+const Comment = require("../models/Comment.model")
 router.get("/posts", (req, res) => {
     Post
       .find({})
-      .populate("username")
+      .populate("comments")
       .then((posts) => res.json(posts))
       .catch((error) => res.json(error));
   });
   router.get("/posts/:_id", (req, res) => {
-    const { _id } = req.params;
+    const {_id} = req.params;
     Post
       .findById(_id)
-      .populate("username")
+      .populate("comments")
       .then((post) => res.json(post))
       .catch((error) => res.json(error));
   });
     // Creates a new post
   router
       .post("/posts/new", (req, res) => {
-      const { title, bodyText, img, username } = req.body;
+      const { title, bodyText, img, username, saveDate, comments: [] } = req.body;
     Post
-      .create({ title, bodyText, img, username })
-      .then((post) => res.json(post))
+      .create({ title, bodyText, img, username, saveDate, comments: []})
+      .then((newPost) => res.json(newPost))
       .catch((error) => res.status(500).json({ error: "Failed to create post", details: error }));
 });
     // Edits a specific post
@@ -32,7 +32,7 @@ router.put("/posts/edit/:_id", (req, res) => {
     const { _id } = req.params;
     const { title, bodyText, img } = req.body; // Retrieve data from req.body
     Post
-      .findByIdAndUpdate(_id, { title, bodyText, img }, { new: true }) // { new: true } returns the updated post
+      .findByIdAndUpdate(_id, { title, bodyText, img }, { new: true }) // { new: true } returns the updated post  COMMENTS AQUI
       .then((updatedPost) => {
         if (!updatedPost) {
             return res.status(404).json({ error: "Post not found" });
