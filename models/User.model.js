@@ -17,17 +17,24 @@ const userSchema = new Schema(
       required: true,
       unique: true
     },
+    avatar: {
+      type: String,
+    },
     firstName: {
-      type: String
+      type: String,
+      default: "",
     },
     lastName: {
-      type: String
+      type: String,
+      default: "",
     },
     skills: [{
-      type: String
+      type: String,
+      default: "",
     }],
     interests: [{
-      type: String
+      type: String,
+      default: "",
     }],
     createdPosts: [{
       type: Schema.Types.ObjectId,
@@ -37,10 +44,18 @@ const userSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "Project",
     }],
-  },
-  {
-    // this second object adds extra properties: `createdAt` and `updatedAt`
-    timestamps: true,
   });
 const User = model("User", userSchema);
 module.exports = User;
+
+
+
+
+
+
+
+
+
+
+
+
