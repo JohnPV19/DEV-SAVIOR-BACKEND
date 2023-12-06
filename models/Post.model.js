@@ -1,4 +1,5 @@
 const { Schema, model } = require("mongoose");
+
 const postSchema = new Schema({
   title: {
     type: String,
@@ -24,6 +25,10 @@ const postSchema = new Schema({
     type: Date,
     default: Date.now,
   },
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
+  }
 });
 const Post = model("Post", postSchema);
 module.exports = Post;

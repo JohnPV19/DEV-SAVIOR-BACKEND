@@ -5,6 +5,7 @@ const path = require('path');
 const fs = require('fs/promises');
 
 const Project = require("../models/Project.model")
+const User = require("../models/User.model")
 
 
     // Reads all projects
@@ -28,24 +29,10 @@ router
   
 });
 
-
-    // Uploads a project 
-/* router
-.post('/projects/upload', (req, res) => {
-    const {projectName, description, files, contributors} = req.body;
-
-    Project
-    .create({projectName, description, files, contributors })
-    .then((project)=> res.json(project))
-    .catch((error)=> res.json(error))
-  
-}); */
-
-
     // Deletes a project
 router
 .delete('/projects/:_id', (req, res) => {
-    const { _id } = req.params;
+    const {_id} = req.params;
 
     Project.findByIdAndDelete(_id)
     .then(() => res.json({ message: 'Project deleted successfully' }))
@@ -53,27 +40,20 @@ router
   
 });
 
-
-    // Uploads content of uploaded files
-    router.post('/projects/upload', async (req, res) => {
-        try {
-          const { fileName, saveDate, content, username } = req.body;
-
-          // Save file details to MongoDB
-          const newProject = new Project({
-            fileName,
-            content,
-            saveDate,
-            username,
-          });
-      
-          const savedProject = await newProject.save();
-      
-          res.json(savedProject);
-        } catch (error) {
-          console.error(error);
-          res.status(500).json({ error: 'Internal Server Error' });
-        }
-      });
+    // Uploads new project
+    router.post('/projects/upload', (req, res) => {
+        let resProject;
+        const {fileName, saveDate, content, username, id} = req.body;
+        Project.create({fileName, content, saveDate, username})
+        .then((newProject) => {
+          resProject = newProject; 
+           return User.findByIdAndUpdate(id, {$push: {createdProjects: newProject._id}})
+        })
+        .then(() => {
+          res.json(resProject);
+      })
+    });
+  
+  
 
 module.exports = router;

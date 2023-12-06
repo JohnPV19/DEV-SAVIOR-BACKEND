@@ -20,5 +20,6 @@ const commentSchema = new Schema({
     default: Date.now,
   },
 });
+
 const Comment = model('Comment', commentSchema);
 module.exports = Comment;

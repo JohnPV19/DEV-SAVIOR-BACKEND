@@ -18,6 +18,25 @@ const userSchema = new Schema(
       required: true, 
       unique: true 
     },
+    avatar: {
+      type: String,
+    },
+    firstName: {
+      type: String,
+      default: "",
+    },
+    lastName: {
+      type: String,
+      default: "",
+    },
+    skills: [{
+      type: String,
+      default: "",
+    }],
+    interests: [{
+      type: String,
+      default: "",
+    }],
     createdPosts: [{
       type: Schema.Types.ObjectId, 
       ref: "Post",
@@ -26,14 +45,6 @@ const userSchema = new Schema(
       type: Schema.Types.ObjectId, 
       ref: "Project",
     }],
-    createdComments: [{
-      type: Schema.Types.ObjectId, 
-      ref: "Comment",
-    }],
-  },
-  {
-    // this second object adds extra properties: `createdAt` and `updatedAt`
-    timestamps: true,
   });
 
 const User = model("User", userSchema);
