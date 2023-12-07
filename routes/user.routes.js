@@ -1,10 +1,15 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const router = express.Router();
+const multer = require("multer");
 const User = require("../models/User.model")
 const Post = require("../models/Post.model")
 const Project = require("../models/Project.model")
-    // Get specified user
+ 
+// Set up Multer for handling file uploads
+const storage = multer.memoryStorage(); // Store file data in memory as Buffer
+const upload = multer({ storage: storage });
+// Get specified user
 router
     .get("/profile/:_id/user", (req, res) => {
     const {_id} = req.params;
@@ -25,17 +30,23 @@ router
       .catch((error) => res.status(500).json({ error: "Failed to create post", details: error }));
 });
     // Edits a specific user
-router
-    .put("/profile/:_id/edit", (req, res) => {
-    const { _id } = req.params;
-    const {username, email, password, avatar, firstName, lastName, skills: [], interests: [], createdProjects: [], createdPosts: []} = req.body; // Retrieve data from req.body
-    User
-      .findByIdAndUpdate(_id, {username, email, password, avatar, firstName, lastName, skills: [], interests: [], createdProjects: [], createdPosts: []}, { new: true }) // { new: true } returns the updated post  COMMENTS AQUI
-      .then((updatedPost) => {
-        if (!updatedPost) {
-            return res.status(404).json({ error: "Post not found" });
+    router.put("/profile/:_id/edit", upload.single('avatar'), (req, res) => {
+      const { _id } = req.params;
+      const { username, email, password, firstName, lastName, skills, interests } = req.body;
+      // Check if a file was uploaded
+      const avatarData = req.file ? req.file.buffer : undefined;
+      // Update the user with the new data, including the avatar
+      User.findByIdAndUpdate(
+        _id,
+        { username, email, password, firstName, lastName, skills, interests, avatar: avatarData },
+        { new: true }
+      )
+        .then((updatedUser) => {
+          if (!updatedUser) {
+            return res.status(404).json({ error: "User not found" });
           }
-            res.json(updatedPost)}) // Send the updated post as JSON response)
-      .catch((error) => res.status(500).json({ error: "Failed to update post", details: error }));
-});
+          res.json(updatedUser);
+        })
+        .catch((error) => res.status(500).json({ error: "Failed to update user", details: error }));
+    });
 module.exports = router;
