@@ -1,5 +1,4 @@
 const { Schema, model } = require("mongoose");
-
 const userSchema = new Schema(
   {
     email: {
@@ -13,10 +12,10 @@ const userSchema = new Schema(
       type: String,
       required: [true, "Password is required."],
     },
-    username: { 
-      type: String, 
-      required: true, 
-      unique: true 
+    username: {
+      type: String,
+      required: true,
+      unique: true
     },
     avatar: {
       type: Buffer,
@@ -34,15 +33,25 @@ const userSchema = new Schema(
       type: String,
     }],
     createdPosts: [{
-      type: Schema.Types.ObjectId, 
+      type: Schema.Types.ObjectId,
       ref: "Post",
     }],
     createdProjects: [{
-      type: Schema.Types.ObjectId, 
+      type: Schema.Types.ObjectId,
       ref: "Project",
     }],
   });
-
 const User = model("User", userSchema);
-
 module.exports = User;
+
+
+
+
+
+
+
+
+
+
+
+
