@@ -19,23 +19,19 @@ const userSchema = new Schema(
       unique: true 
     },
     avatar: {
-      type: String,
+      type: Buffer,
     },
     firstName: {
       type: String,
-      default: "",
     },
     lastName: {
       type: String,
-      default: "",
     },
     skills: [{
       type: String,
-      default: "",
     }],
     interests: [{
       type: String,
-      default: "",
     }],
     createdPosts: [{
       type: Schema.Types.ObjectId, 
